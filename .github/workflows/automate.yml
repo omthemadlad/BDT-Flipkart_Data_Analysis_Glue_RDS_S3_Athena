@@ -1,1 +1,57 @@
+AWSTemplateFormatVersion: "2010-09-09"
 
+Parameters:
+  GlueScriptS3Path:
+    Type: String
+    Description: S3 path to the Glue job script
+
+Resources:
+  LabRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GlueS3Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: !Sub "${GlueScriptS3Path}/*"
+
+  MyGlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: CFT_Testing
+      Description: Glue job to run script from S3
+      Role: !GetAtt LabRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Ref GlueScriptS3Path
+      DefaultArguments:
+        "--job-language": "python"
+        "--enable-continuous-cloudwatch-log": "true"
+        "--enable-continuous-log-filter": "true"
+        "--enable-metrics": ""
+        "--job-bookmark-option": "job-bookmark-enable"
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+      GlueVersion: "2.0"
+      MaxCapacity: 1.0
+      MaxRetries: 0
+      Timeout: 10
+      WorkerType: "Standard"
+
+  MyGlueJobRun:
+    Type: AWS::Glue::JobRun
+    DependsOn: MyGlueJob
+    Properties:
+      JobName: !Ref MyGlueJob
