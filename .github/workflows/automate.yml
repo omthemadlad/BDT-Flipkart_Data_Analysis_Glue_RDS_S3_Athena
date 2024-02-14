@@ -49,9 +49,3 @@ Resources:
       MaxRetries: 0
       Timeout: 10
       WorkerType: "Standard"
-
-  MyGlueJobRun:
-    Type: AWS::Glue::JobRun
-    DependsOn: MyGlueJob
-    Properties:
-      JobName: !Ref MyGlueJob
