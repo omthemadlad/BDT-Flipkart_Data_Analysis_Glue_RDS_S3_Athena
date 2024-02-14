@@ -15,7 +15,7 @@ jobs:
 
       - name: Upload Script to S3 Bucket
         run: |
-          aws s3 cp Products_Glue_Job.py s3://finalprojectinput/From Github/
+          aws s3 cp Products_Glue_Job.py s3://finalprojectinput/github/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
