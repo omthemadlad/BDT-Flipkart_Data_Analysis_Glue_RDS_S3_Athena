@@ -35,8 +35,6 @@ Resources:
         - JobName: !Ref GlueJobImport
       WorkflowName: !Ref WorkflowJob
       Description: Run Bitcch Run
-      EventBatchingCondition: 
-        EventBatchingCondition
       Name: Triggering the Glue Job
       Schedule: String
       StartOnCreation: True
