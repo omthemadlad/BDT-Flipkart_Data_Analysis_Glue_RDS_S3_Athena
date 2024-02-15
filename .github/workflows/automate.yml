@@ -36,8 +36,8 @@ Resources:
       WorkflowName: !Ref WorkflowJob
       Description: Run Bitcch Run
       Name: Triggering the Glue Job
-      Schedule: String
+      #Schedule: String
       StartOnCreation: True
-      Type: ON_DEMAND
-      WorkflowName: String
+      #Type: ON_DEMAND
+      #WorkflowName: String
       
