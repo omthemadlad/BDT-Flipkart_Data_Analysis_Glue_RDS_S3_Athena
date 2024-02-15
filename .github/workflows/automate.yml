@@ -12,7 +12,7 @@ Resources:
   GlueJobImport:
     Type: AWS::Glue::Job
     Properties:
-      Name: data-ingestion1
+      Name: Sales_Glue_via_CFT
       Description: Ingests data from s3 and writes it as a parquet file to the data lake
       ExecutionClass: FLEX
       GlueVersion: 4.0
@@ -23,17 +23,23 @@ Resources:
       WorkerType: G.1X
       Command:
         Name: glueetl
-        ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
+        ScriptLocation: s3://finalprojectinput/github/sales/Sales.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
     
-  WorkflowStartTrigger:
+  WorkflowStartTrigger:    
     Type: AWS::Glue::Trigger
     Properties:
-      Name: StartTrigger
-      Type: ON_DEMAND
-      Description: Trigger for starting the workflow
-      Actions:
+      Actions: 
         - JobName: !Ref GlueJobImport
       WorkflowName: !Ref WorkflowJob
+      Description: Run Bitcch Run
+      EventBatchingCondition: 
+        EventBatchingCondition
+      Name: Triggering the Glue Job
+      Schedule: String
+      StartOnCreation: True
+      Type: String
+      WorkflowName: String
+      
