@@ -37,7 +37,14 @@ Resources:
         - JobName: !Ref GlueJobImport
       WorkflowName: !Ref WorkflowJob
 
-Outputs:
-  JobRunId:
-    Description: Job Run ID of the triggered Glue job
-    Value: !GetAtt GlueJobImport.JobRuns[0].Id
+  JobRun:
+    Type: AWS::Glue::JobRun
+    Properties:
+      JobName: !Ref GlueJobImport
+      NumberOfWorkers: !Ref GlueJobImport.NumberOfWorkers
+      # Other parameters as needed
+
+  Outputs:
+    JobRunId:
+      Description: Job Run ID of the triggered Glue job
+      Value: !Ref JobRun
