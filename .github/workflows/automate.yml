@@ -26,7 +26,7 @@ Resources:
         Name: glueetl
         ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
       DefaultArguments:
-        "--job-bookmark-option": "job-bookmark-enable"  # Enable job bookmarking
+        --job-bookmark-option: job-bookmark-enable
 
   WorkflowStartTrigger:
     Type: AWS::Glue::Trigger
