@@ -12,7 +12,7 @@ Resources:
   GlueJobImport:
     Type: AWS::Glue::Job
     Properties:
-      Name: data-ingestion
+      Name: data-ingestion1
       Description: Ingests data from s3 and writes it as a parquet file to the data lake
       ExecutionClass: FLEX
       GlueVersion: 4.0
@@ -24,6 +24,8 @@ Resources:
       Command:
         Name: glueetl
         ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
+      DefaultArguments:
+        "--job-bookmark-option": "job-bookmark-enable"
 
 
   WorkflowStartTrigger:
