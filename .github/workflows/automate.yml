@@ -24,8 +24,7 @@ Resources:
       Command:
         Name: glueetl
         ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
-      BookmarkOptions:
-        JobBookmarkRunId: true
+
 
   WorkflowStartTrigger:
     Type: AWS::Glue::Trigger
