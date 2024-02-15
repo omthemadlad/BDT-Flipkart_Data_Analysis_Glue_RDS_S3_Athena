@@ -70,7 +70,10 @@ Resources:
               - Effect: Allow
                 Action:
                   - glue:StartJobRun
-                Resource: !GetAtt GlueJob.Arn
+                # Use Fn::Sub to construct the ARN of the Glue job
+                Resource: !Sub
+                  - arn:aws:glue:${AWS::Region}:${AWS::AccountId}:job/${GlueJobName}
+                  - GlueJobName: !Ref GlueJob
 
   S3EventTrigger:
     Type: AWS::S3::Bucket
