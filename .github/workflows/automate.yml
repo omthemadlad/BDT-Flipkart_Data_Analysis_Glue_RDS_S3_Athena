@@ -27,24 +27,14 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-  WorkflowStartTrigger:
-    Type: AWS::Glue::Trigger
-    Properties:
-      Name: StartTrigger
-      Type: ON_DEMAND  # Or adjust for desired triggering (SCHEDULED, EVENT, etc.)
-      Description: "Trigger for starting the workflow"
-      Actions:
-        - JobName: !Ref GlueJobImport
-      WorkflowName: !Ref WorkflowJob
+  MyScheduledTrigger:
+  Type: 'AWS::Glue::Trigger'
+  Properties:
+    Name: MyScheduledTrigger
+    Type: SCHEDULED
+    Schedule: 'cron(15 14 15 2 ? 2024)'  # This runs the job on February 15, 2024 at 14:15 UTC
+    Actions:
+      - JobName: !Ref GlueJobImport
+    WorkflowName: !Ref WorkflowJob
 
-  JobRun:
-    Type: AWS::Glue::JobRun
-    Properties:
-      JobName: !Ref GlueJobImport
-      NumberOfWorkers: !Ref GlueJobImport.NumberOfWorkers
-      # Other parameters as needed
 
-  Outputs:
-    JobRunId:
-      Description: Job Run ID of the triggered Glue job
-      Value: !Ref JobRun
