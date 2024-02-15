@@ -38,6 +38,6 @@ Resources:
       Name: Triggering the Glue Job
       Schedule: String
       StartOnCreation: True
-      Type: String
+      Type: ON_DEMAND
       WorkflowName: String
       
