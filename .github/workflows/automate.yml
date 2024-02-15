@@ -10,7 +10,7 @@ Parameters:
     Type: String
     Description: S3 bucket where files will be uploaded
     # Specify your S3 bucket name here
-    Default: arn:aws:s3:::finalprojectinput
+    Default: finalprojectinput
 
   S3Prefix:
     Type: String
