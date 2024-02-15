@@ -26,7 +26,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --stack-name CFTStack \
+            --stack-name AutomateStack \
             --template-file .github/workflows/automate.yml \
             --capabilities CAPABILITY_IAM
         env:
