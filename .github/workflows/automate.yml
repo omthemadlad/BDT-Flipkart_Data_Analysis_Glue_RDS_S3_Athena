@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "Create AWS Resources"
+Description: "Create AWS Resources and run Glue job"
 
 Resources:
   WorkflowJob:
     Type: AWS::Glue::Workflow
     Properties:
-      Description: Create workflow
+      Description: "Create workflow"
       MaxConcurrentRuns: 1
       Name: jobworkflow
 
@@ -13,7 +13,7 @@ Resources:
     Type: AWS::Glue::Job
     Properties:
       Name: data-ingestion1
-      Description: Ingests data from s3 and writes it as a parquet file to the data lake
+      Description: "Ingests data from S3 and writes it as a parquet file to the data lake"
       ExecutionClass: FLEX
       GlueVersion: 4.0
       MaxRetries: 0
@@ -27,13 +27,17 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-
   WorkflowStartTrigger:
     Type: AWS::Glue::Trigger
     Properties:
       Name: StartTrigger
-      Type: ON_DEMAND
-      Description: Trigger for starting the workflow
+      Type: ON_DEMAND  # Or adjust for desired triggering (SCHEDULED, EVENT, etc.)
+      Description: "Trigger for starting the workflow"
       Actions:
         - JobName: !Ref GlueJobImport
       WorkflowName: !Ref WorkflowJob
+
+Outputs:
+  JobRunId:
+    Description: Job Run ID of the triggered Glue job
+    Value: !GetAtt GlueJobImport.JobRuns[0].Id
