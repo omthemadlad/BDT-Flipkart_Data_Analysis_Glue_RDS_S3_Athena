@@ -1,94 +1,39 @@
-AWSTemplateFormatVersion: '2010-09-09'
-
-Parameters:
-  GlueJobName:
-    Type: String
-    Description: Name of the Glue Job - SALES_CFT
-    Default: SALES_CFT
-
-  S3Bucket:
-    Type: String
-    Description: S3 bucket where files will be uploaded
-    # Specify your S3 bucket name here
-    Default: finalprojectinput
-
-  S3Prefix:
-    Type: String
-    Description: S3 prefix (folder) within the bucket where files will be uploaded
-    Default: sales/to_test_incremental_load/
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Create AWS Resources"
 
 Resources:
-  GlueJob:
+  WorkflowJob:
+    Type: AWS::Glue::Workflow
+    Properties:
+      Description: Create workflow
+      MaxConcurrentRuns: 1
+      Name: jobworkflow
+
+  GlueJobImport:
     Type: AWS::Glue::Job
     Properties:
+      Name: Sales_Glue_Job
+      Description: Ingests data from s3 and writes it as a parquet file to the data lake
+      ExecutionClass: FLEX
+      GlueVersion: 4.0
+      MaxRetries: 0
+      NumberOfWorkers: 6
+      Role: arn:aws:iam::278557494232:role/LabRole
+      Timeout: 90
+      WorkerType: G.1X
       Command:
         Name: glueetl
         ScriptLocation: s3://finalprojectinput/github/sales/Sales.py
       DefaultArguments:
-        "--job-language": python
-      ExecutionProperty:
-        MaxConcurrentRuns: 1
-      GlueVersion: 2.0
-      Name: !Ref GlueJobName
-      Role: arn:aws:iam::278557494232:role/LabRole
-      Timeout: 2880 # Timeout in minutes (2 days)
-      WorkerType: G.1X
-      NumberOfWorkers: 5
-      DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-  LambdaFunction:
-    Type: AWS::Lambda::Function
+    
+  WorkflowStartTrigger:
+    Type: AWS::Glue::Trigger
     Properties:
-      Handler: lambda_function.py
-      Role: arn:aws:iam::278557494232:role/LabRole
-      FunctionName: sales_function
-      Runtime: python3.8
-      Timeout: 30
-
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: LambdaS3Policy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: arn:aws:logs:*:*:*
-              - Effect: Allow
-                Action:
-                  - glue:StartJobRun
-                # Use Fn::Sub to construct the ARN of the Glue job
-                Resource: !Sub
-                  - arn:aws:glue:${AWS::Region}:${AWS::AccountId}:job/${GlueJobName}
-                  - GlueJobName: !Ref GlueJob
-
-  S3EventTrigger:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref S3Bucket
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: 's3:ObjectCreated:*'
-            Function: !GetAtt LambdaFunction.Arn
-
-Outputs:
-  GlueJobNameOutput:
-    Description: Name of the created Glue job
-    Value: !Ref GlueJobName
-
-  LambdaFunctionArnOutput:
-    Description: ARN of the Lambda function
-    Value: !GetAtt LambdaFunction.Arn
+      Name: StartTrigger
+      Type: ON_DEMAND
+      Description: Trigger for starting the workflow
+      Actions:
+        - JobName: !Ref GlueJobImport
+      WorkflowName: !Ref WorkflowJob
