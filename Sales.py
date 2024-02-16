@@ -87,7 +87,7 @@ AmazonS3_node1707466390637 = glueContext.getSink(
     transformation_ctx="AmazonS3_node1707466390637",
 )
 AmazonS3_node1707466390637.setCatalogInfo(
-    catalogDatabase="flipkart_testing", catalogTableName="SALES_Increment"
+    catalogDatabase="flipkart_testing", catalogTableName="SALES_via_CFT"
 )
 AmazonS3_node1707466390637.setFormat("glueparquet", compression="uncompressed")
 AmazonS3_node1707466390637.writeFrame(SQLQuery_node1707466387997)
