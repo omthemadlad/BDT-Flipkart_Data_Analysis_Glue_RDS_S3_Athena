@@ -7,13 +7,13 @@ Resources:
     Properties:
       Description: Create workflow
       MaxConcurrentRuns: 1
-      Name: jobworkflow
+      Name: flipkartworkflow
 
-  GlueJobImport:
+  GlueJobSalesData:
     Type: AWS::Glue::Job
     Properties:
       Name: Sales_Glue_Job
-      Description: Ingests data from s3 and writes it as a parquet file to the data lake
+      Description: Ingests data from s3 and after doing transformation it writes the data as a parquet file to the data warehouse
       ExecutionClass: FLEX
       GlueVersion: 4.0
       MaxRetries: 0
@@ -27,7 +27,24 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-    
+  GlueJobProductsData:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: Product_Glue_Job
+      Description: Ingests data from RDS and after doing transformation it writes the data as a parquet file to the data warehouse
+      ExecutionClass: FLEX
+      GlueVersion: 4.0
+      MaxRetries: 0
+      NumberOfWorkers: 6
+      Role: arn:aws:iam::278557494232:role/LabRole
+      Timeout: 90
+      WorkerType: G.1X
+      Command:
+        Name: glueetl
+        ScriptLocation: s3://finalprojectinput/github/products/Product.py
+      DefaultArguments:
+        "--job-bookmark-option": "job-bookmark-enable"
+
   WorkflowStartTrigger:
     Type: AWS::Glue::Trigger
     Properties:
@@ -35,5 +52,6 @@ Resources:
       Type: ON_DEMAND
       Description: Trigger for starting the workflow
       Actions:
-        - JobName: !Ref GlueJobImport
+        - JobName: !Ref GlueJobSalesData
+        - JobName: !Ref GlueJobProductsData
       WorkflowName: !Ref WorkflowJob
