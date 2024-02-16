@@ -70,4 +70,11 @@ AmazonS3_node1707851543977 = glueContext.write_dynamic_frame.from_options(
     format_options={"compression": "uncompressed"},
     transformation_ctx="AmazonS3_node1707851543977",
 )
+AmazonS3_node1707851543977.setCatalogInfo(
+    catalogDatabase="flipkart_testing", catalogTableName="Products_via_CFT"
+)
+AmazonS3_node1707851543977.setFormat("glueparquet", compression="uncompressed")
+AmazonS3_node1707851543977.writeFrame(ChangeSchema_node1707477382758)
+
+# Commit the job
 job.commit()
