@@ -34,7 +34,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+  
+      - name: Install AWS CLI
+        run: |
+          pip install awscli
+  
 
+      - name: Run Glue Job
+        run: |
+          aws glue start-job-run --region us-east-1 --job-name Sales_Glue_Job
 
 
 
