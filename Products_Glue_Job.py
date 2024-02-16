@@ -5,7 +5,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.sql.functions import when, col
-from awsglue.dynamicframe import DynamicFrame  # Add this import statement
+from awsglue.dynamicframe import DynamicFrame 
 
 args = getResolvedOptions(sys.argv, ["JOB_NAME"])
 sc = SparkContext()
@@ -59,22 +59,17 @@ ChangeSchema_node1707477382758 = ApplyMapping.apply(
 
 
 # Script generated for node Amazon S3
-AmazonS3_node1707851543977 = glueContext.write_dynamic_frame.from_options(
-    frame=ChangeSchema_node1707477382758,
+AmazonS3_node1708110424343 = glueContext.getSink(
+    path="s3://finalprojectinput/product output/",
     connection_type="s3",
-    format="glueparquet",
-    connection_options={
-        "path": "s3://finalprojectinput/product output/",
-        "partitionKeys": [],
-    },
-    format_options={"compression": "uncompressed"},
-    transformation_ctx="AmazonS3_node1707851543977",
+    updateBehavior="LOG",
+    partitionKeys=[],
+    enableUpdateCatalog=True,
+    transformation_ctx="AmazonS3_node1708110424343",
 )
-AmazonS3_node1707851543977.setCatalogInfo(
-    catalogDatabase="flipkart_testing", catalogTableName="Products_via_CFT"
+AmazonS3_node1708110424343.setCatalogInfo(
+    catalogDatabase="flipkart_testing", catalogTableName="Product_via_CFT"
 )
-AmazonS3_node1707851543977.setFormat("glueparquet", compression="uncompressed")
-AmazonS3_node1707851543977.writeFrame(ChangeSchema_node1707477382758)
-
-# Commit the job
+AmazonS3_node1708110424343.setFormat("glueparquet", compression="uncompressed")
+AmazonS3_node1708110424343.writeFrame(ChangeSchema_node1707477382758)
 job.commit()
