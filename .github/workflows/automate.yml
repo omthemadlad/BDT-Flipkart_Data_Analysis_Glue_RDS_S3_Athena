@@ -45,13 +45,30 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-  WorkflowStartTrigger:
-    Type: AWS::Glue::Trigger
-    Properties:
-      Name: StartTrigger
-      Type: ON_DEMAND
-      Description: Trigger for starting the workflow
-      Actions:
-        - JobName: !Ref GlueJobSalesData
-        - JobName: !Ref GlueJobProductsData
-      WorkflowName: !Ref WorkflowJob
+LambdaFunction:
+  Type: AWS::Lambda::Function
+  Properties:
+    Handler: lamda.lambda_handler  
+    Role: arn:aws:iam::278557494232:role/LabRole  # Provide the ARN of your Lambda execution role
+    FunctionName: Sales_Trigger_via_CFT
+    Timeout: 10  # Specify the timeout as needed
+    Runtime: python3.8  # Adjust the runtime based on your code
+    Code:
+      S3Bucket: finalprojectinput  # Provide the bucket name where your .py script is stored
+      S3Key: lambda_script_for_sales_cft/lamda.py  # Provide the key/path to your .py script in the bucket
+
+S3EventTrigger:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: finalprojectinput
+    NotificationConfiguration:
+      LambdaConfigurations:
+        - Event: s3:ObjectCreated:Put
+          Filter:
+            S3Key:
+              Rules:
+                - Name: suffix
+                  Value: .csv
+                - Name: prefix
+                  Value: sales/to_test_incremental_load/
+          Function: !GetAtt LambdaFunction.Arn
