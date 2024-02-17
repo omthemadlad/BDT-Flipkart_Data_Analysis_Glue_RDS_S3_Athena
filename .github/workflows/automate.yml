@@ -58,7 +58,6 @@ Resources:
         S3Key: lambda_script_for_sales_cft/trigger.zip  # Provide the key/path to your .py script in the bucket
 
   S3EventTrigger:
-    Type: AWS::S3::Bucket
     Properties:
       BucketName: finalprojectinput
       NotificationConfiguration:
