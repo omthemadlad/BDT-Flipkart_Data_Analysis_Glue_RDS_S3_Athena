@@ -55,7 +55,7 @@ Resources:
       Runtime: python3.8  # Adjust the runtime based on your code
       Code:
         S3Bucket: finalprojectinput  # Provide the bucket name where your .py script is stored
-        S3Key: lambda_script_for_sales_cft/lamda.py  # Provide the key/path to your .py script in the bucket
+        S3Key: lambda_script_for_sales_cft/trigger.zip  # Provide the key/path to your .py script in the bucket
 
   S3EventTrigger:
     Type: AWS::S3::Bucket
