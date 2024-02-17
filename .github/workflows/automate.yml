@@ -41,17 +41,16 @@ Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Handler: lamda.lambda_handler  
-      Role: arn:aws:iam::278557494232:role/LabRole  # Provide the ARN of your Lambda execution role
+      Handler: lamda.lambda_handler
+      Role: arn:aws:iam::278557494232:role/LabRole 
       FunctionName: Sales_Trigger_via_CFT
-      Timeout: 10  # Specify the timeout as needed
-      Runtime: python3.8  # Adjust the runtime based on your code
+      Timeout: 10
+      Runtime: python3.8 
       Code:
-        S3Bucket: finalprojectinput  # Provide the bucket name where your .py script is stored
-        S3Key: lambda_script_for_sales_cft/trigger.zip  # Provide the key/path to your .py script in the bucket
+        S3Bucket: finalprojectinput
+        S3Key: lambda_script_for_sales_cft/trigger.zip
 
   S3EventTrigger:
-    Type: AWS::S3::Bucket
     Properties:
       BucketName: sales-datalake-group01
       NotificationConfiguration:
@@ -62,4 +61,6 @@ Resources:
                 Rules:
                   - Name: suffix
                     Value: .csv
+                  - Name: prefix
+                    Value: sales/to_test_incremental_load/
             Function: !GetAtt LambdaFunction.Arn
