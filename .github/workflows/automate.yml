@@ -56,12 +56,11 @@ Resources:
       Code:
         S3Bucket: finalprojectinput  # Provide the bucket name where your .py script is stored
         S3Key: lambda_script_for_sales_cft/trigger.zip  # Provide the key/path to your .py script in the bucket
-      Triggers:
-        - Event: s3:ObjectCreated:Put
-          Filter:
-            S3Key:
-              Rules:
-                - Name: suffix
-                  Value: .csv
-                - Name: prefix
-                  Value: sales/to_test_incremental_load/
+
+  LambdaS3InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: arn:aws:s3:::finalprojectinput/sales/to_test_incremental_load/
