@@ -39,21 +39,21 @@ Resources:
         "--job-bookmark-option": "job-bookmark-enable"
 
   LambdaFunction:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
       Handler: lamda.lambda_handler
-      Role: arn:aws:iam::278557494232:role/LabRole 
+      Role: arn:aws:iam::278557494232:role/LabRole
       FunctionName: Sales_Trigger_via_CFT
       Timeout: 10
-      Runtime: python3.8 
+      Runtime: python3.8
       Code:
         S3Bucket: finalprojectinput
         S3Key: lambda_script_for_sales_cft/trigger.zip
 
-  S3EventTrigger:
+  S3BucketTrigger:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: sales-datalake-group01
+      BucketName: finalprojectinput
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:Put
@@ -64,4 +64,10 @@ Resources:
                     Value: .csv
                   - Name: prefix
                     Value: sales/to_test_incremental_load/
-            Function: !GetAtt LambdaFunction.Arn
+
+  GlueJobTriggerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: glue:StartJobRun
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Principal: 's3.amazonaws.com'
