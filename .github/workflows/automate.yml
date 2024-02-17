@@ -51,6 +51,7 @@ Resources:
         S3Key: lambda_script_for_sales_cft/trigger.zip
 
   S3EventTrigger:
+    Type: AWS::S3::Bucket
     Properties:
       BucketName: sales-datalake-group01
       NotificationConfiguration:
