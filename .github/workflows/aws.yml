@@ -1,11 +1,9 @@
 name: AWS Resource Creation 
-
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
 jobs:
   Deploy_CFT:
     runs-on: ubuntu-latest
