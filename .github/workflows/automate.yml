@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: "Create AWS Resources for Group 01"
+Globals:
+  Function:
+    MemorySize: 128
+    Timeout: 15
+Description: "Create AWS Resources"
 
 Resources:
   GlueJobSalesData:
@@ -39,36 +43,22 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-  LambdaFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: lamda.lambda_handler
-      Role: arn:aws:iam::278557494232:role/LabRole
-      FunctionName: Sales_Trigger_via_CFT
-      Timeout: 10
-      Runtime: python3.8
-      Code:
-        S3Bucket: finalprojectinput
-        S3Key: lambda_script_for_sales_cft/trigger.zip
-
-  S3BucketTrigger:
+  finalprojectinput123:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: finalprojectinput
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:Put
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: .csv
-                  - Name: prefix
-                    Value: sales/to_test_incremental_load/
-
-  GlueJobTriggerPermission:
-    Type: AWS::Lambda::Permission
+      BucketName: sales-data-cft
+  
+  MyLambdaCFT:
+    Type: AWS::Serverless::Function
     Properties:
-      Action: glue:StartJobRun
-      FunctionName: !GetAtt LambdaFunction.Arn
-      Principal: 's3.amazonaws.com'
+      FunctionName: Sales-CFT-Trigger
+      CodeUri: s3://finalprojectinput/lambda_script_for_sales_cft/trigger.zip
+      Handler: lamda.lambda_handler
+      Runtime: python3.8
+      Role: arn:aws:iam::278557494232:role/LabRole
+      Events:
+        S3BucketEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref finalprojectinput123
+            Events: 's3:ObjectCreated:*'
