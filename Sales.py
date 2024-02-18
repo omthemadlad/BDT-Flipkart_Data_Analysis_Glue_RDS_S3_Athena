@@ -31,7 +31,7 @@ AmazonS3_node1707466350365 = glueContext.create_dynamic_frame.from_options(
     },
     connection_type="s3",
     format="csv",
-    connection_options={"paths": ["s3://finalprojectinput/sales/to_test_incremental_load/"], "recurse": True},
+    connection_options={"paths": ["s3://sales-data-cft/"], "recurse": True},
     transformation_ctx="AmazonS3_node1707466350365",
 )
 
