@@ -42,11 +42,6 @@ Resources:
         ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
-
-  finalprojectinput123:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: sales-data-cft
   
   MyLambdaCFT:
     Type: AWS::Serverless::Function
@@ -56,9 +51,3 @@ Resources:
       Handler: lamda.lambda_handler
       Runtime: python3.8
       Role: arn:aws:iam::278557494232:role/LabRole
-      Events:
-        S3BucketEvent:
-          Type: S3
-          Properties:
-            Bucket: !Ref finalprojectinput123
-            Events: 's3:ObjectCreated:*'
