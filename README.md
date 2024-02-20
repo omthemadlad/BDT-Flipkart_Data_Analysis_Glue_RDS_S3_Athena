@@ -4,21 +4,29 @@ Overview
 In this comprehensive Big Data project, I conducted an in-depth analysis of Flipkart Grocery transaction data to unveil valuable insights into sales patterns, measure discount effects, and evaluate brand performance. Leveraging a robust tech stack including AWS Glue, AWS Crawler, AWS S3, AWS RDS, AWS Athena, Kafka, GitHub Actions, and Tableau, I designed a powerful data pipeline capable of handling both batch and real-time streaming data.
 
 Technologies Used
-AWS Glue: Applied for Extract, Transform, Load (ETL) operations, enabling seamless data integration and transformation.
+AWS Glue: 
+Applied for Extract, Transform, Load (ETL) operations, enabling seamless data integration and transformation.
 
-AWS S3: Leveraged as a scalable and durable storage solution for storing raw and processed data.
+AWS S3: 
+Leveraged as a scalable and durable storage solution for storing raw and processed data.
 
-AWS RDS: Employed for hosting a relational database to store structured data, providing a robust foundation for analysis.
+AWS RDS: 
+Employed for hosting a relational database to store structured data, providing a robust foundation for analysis.
 
-AWS Athena: Utilized for querying data directly in S3 using SQL, enabling quick and efficient analytics.
+AWS Athena: 
+Utilized for querying data directly in S3 using SQL, enabling quick and efficient analytics.
 
-GitHub Actions: Automated the data pipeline process, triggering workflows with each update to the repository, ensuring a streamlined and efficient workflow.
+GitHub Actions: 
+Automated the data pipeline process, triggering workflows with each update to the repository, ensuring a streamlined and efficient workflow.
 
-Kafka: Implemented as a real-time streaming data source, enriching the analysis with up-to-the-minute insights. (Add on)
+Kafka: 
+Implemented as a real-time streaming data source, enriching the analysis with up-to-the-minute insights. (Add on)
 
-Tableau: Visualized the derived insights through an interactive dashboard, providing users with a user-friendly interface to explore the data dynamically.
+Tableau: 
+Visualized the derived insights through an interactive dashboard, providing users with a user-friendly interface to explore the data dynamically.
 
-AWS SNS: Implemented facilitating communication and notification functionalities in real-time.
+AWS SNS: 
+Implemented facilitating communication and notification functionalities in real-time.
 
 Data Pipeline Workflow
 #Add architecture
