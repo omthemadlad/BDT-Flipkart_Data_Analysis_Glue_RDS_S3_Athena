@@ -25,3 +25,36 @@ In this comprehensive Big Data project, we delve into the Flipkart Grocery trans
   ```bash
   git clone https://github.com/your-username/your-repository.git
 
+#Deployment Steps
+Prerequisites:
+
+An AWS account with necessary permissions.
+AWS CLI configured and credentials set.
+
+##1. Create an S3 Bucket:
+Purpose: Store incoming sales data.
+Instructions: Use the AWS CLI or console to create a bucket.
+
+##2. Set up an RDS:
+Purpose: Store products data.
+Instructions: Use the AWS console or CloudFormation to create an RDS instance.
+
+##3. Use SAM to Create Glue Jobs and Lambda Function:
+Jobs: Sales_Glue_Job and Products_Glue_Job.
+Function: Sales_Trigger.
+Instructions:
+Use the provided .py scripts for Glue Jobs and Lambda Function.
+Define a SAM template.yaml file configuring these resources.
+Use deploy to deploy the CloudFormation stack.
+
+##4. Add S3 Trigger:
+Add an S3 Trigger to the Lambda Function.
+Instructions: Use the AWS console or CloudFormation to configure an S3 trigger on the bucket pointing to the Sales_Trigger Lambda function.
+
+##5. Create SNS Topic:
+Create an SNS Topic for communication.
+Instructions: Use the AWS console or CloudFormation to create an SNS topic.
+
+##6. Add Email Subscribers:
+Add desired email subscribers to the SNS Topic.
+Instructions: Use the AWS console to subscribe desired email addresses to the topic.
