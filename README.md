@@ -39,12 +39,11 @@ Sales Patterns and Discount Effects: Unveiled and measured the impact of discoun
 Brand Performance Evaluation: Evaluated brand performance to inform partnerships, marketing strategies, and inventory management.
 
 
-How to Use
+How to Use -
 Clone Repository: Clone this repository to your local machine using the following command:
+<span style="background-color: #FFFF00">git clone https://github.com/your-username/your-repository.git</span>
 
-bash
-Copy code
-git clone https://github.com/your-username/your-repository.git
+
 Setup Environment: Follow the setup instructions in the documentation to configure the project environment.
 Steps to implement -
 1. Create a S3 bucket to store the incoming Sales data.
