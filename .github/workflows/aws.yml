@@ -13,8 +13,9 @@ jobs:
 
       - name: Upload Scripts to S3 Bucket
         run: |
-          aws s3 cp Products_Glue_Job.py s3://finalprojectinput/github/products/
-          aws s3 cp Sales.py s3://finalprojectinput/github/sales/
+          aws s3 cp Products_Glue_Job.py s3://flipkart-dataset/scripts/
+          aws s3 cp Sales.py s3://flipkart-dataset/scripts/
+          aws s3 cp lambda_function.rar s3://flipkart-dataset/scripts/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
