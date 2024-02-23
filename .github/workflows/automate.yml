@@ -49,7 +49,7 @@ Resources:
         - Protocol: email
           Endpoint: yadavomkar534@gmail.com
 
-MyLambdaCFT:
+  MyLambdaCFT:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: Sales-CFT-Trigger
