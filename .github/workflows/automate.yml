@@ -23,6 +23,23 @@ Resources:
         ScriptLocation: s3://flipkart-dataset/scripts/Sales.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
+        
+  GlueJobProductsData:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: Product_Glue_Job
+      Description: Ingests data from RDS and after doing transformation it writes the data as a parquet file to the data warehouse
+      GlueVersion: 4.0
+      MaxRetries: 0
+      NumberOfWorkers: 8
+      Role: arn:aws:iam::997290969158:role/LabRole
+      Timeout: 90
+      WorkerType: G.1X
+      Command:
+        Name: glueetl
+        ScriptLocation: s3://flipkart-dataset/scripts/Products_Glue_Job.py
+      DefaultArguments:
+        "--job-bookmark-option": "job-bookmark-enable"
 
   GlueJobNotificationTopic:
     Type: AWS::SNS::Topic
@@ -30,7 +47,7 @@ Resources:
       DisplayName: "Glue Job Notification Topic"
       Subscription:
         - Protocol: email
-          Endpoint: yadavomkar534@gmail.com
+          Endpoint: maheshkatale2000@gmail.com
 
   MyLambdaCFT:
     Type: AWS::Lambda::Function
@@ -42,6 +59,9 @@ Resources:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Role: arn:aws:iam::997290969158:role/LabRole
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref GlueJobNotificationTopic
 
   LambdaInvokePermission:
     Type: AWS::Lambda::Permission
