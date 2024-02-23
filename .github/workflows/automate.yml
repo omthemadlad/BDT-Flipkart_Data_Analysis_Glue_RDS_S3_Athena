@@ -16,12 +16,12 @@ Resources:
       GlueVersion: 4.0
       MaxRetries: 0
       NumberOfWorkers: 6
-      Role: arn:aws:iam::278557494232:role/LabRole
+      Role: arn:aws:iam::997290969158:role/LabRole
       Timeout: 90
       WorkerType: G.1X
       Command:
         Name: glueetl
-        ScriptLocation: s3://finalprojectinput/github/sales/Sales.py
+        ScriptLocation: s3://flipkart-dataset/scripts/Sales.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
@@ -34,12 +34,12 @@ Resources:
       GlueVersion: 4.0
       MaxRetries: 0
       NumberOfWorkers: 6
-      Role: arn:aws:iam::278557494232:role/LabRole
+      Role: arn:aws:iam::997290969158:role/LabRole
       Timeout: 90
       WorkerType: G.1X
       Command:
         Name: glueetl
-        ScriptLocation: s3://finalprojectinput/github/products/Products_Glue_Job.py
+        ScriptLocation: s3://flipkart-dataset/scripts/Products_Glue_Job.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
   
@@ -47,7 +47,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: Sales-CFT-Trigger
-      CodeUri: s3://finalprojectinput/lambda_script_for_sales_cft/trigger.zip
+      CodeUri: s3://flipkart-dataset/scripts/lambda_function.zip
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
-      Role: arn:aws:iam::278557494232:role/LabRole
+      Role: arn:aws:iam::997290969158:role/LabRole
