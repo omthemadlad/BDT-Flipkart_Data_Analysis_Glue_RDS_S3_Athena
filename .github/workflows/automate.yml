@@ -49,11 +49,13 @@ Resources:
         - Protocol: email
           Endpoint: yadavomkar534@gmail.com
 
-  MyLambdaCFT:
+MyLambdaCFT:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: Sales-CFT-Trigger
-      CodeUri: s3://flipkart-dataset/scripts/lambda_function.zip
+      Code:
+        S3Bucket: flipkart-dataset
+        S3Key: scripts/lambda_function.zip
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Role: arn:aws:iam::997290969158:role/LabRole
