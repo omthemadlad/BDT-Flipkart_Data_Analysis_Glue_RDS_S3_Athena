@@ -12,10 +12,9 @@ Resources:
     Properties:
       Name: Sales_Glue_Job
       Description: Ingests data from s3 and after doing transformation it writes the data as a parquet file to the data warehouse
-      ExecutionClass: FLEX
       GlueVersion: 4.0
       MaxRetries: 0
-      NumberOfWorkers: 6
+      NumberOfWorkers: 8
       Role: arn:aws:iam::997290969158:role/LabRole
       Timeout: 90
       WorkerType: G.1X
@@ -30,10 +29,9 @@ Resources:
     Properties:
       Name: Product_Glue_Job
       Description: Ingests data from RDS and after doing transformation it writes the data as a parquet file to the data warehouse
-      ExecutionClass: FLEX
       GlueVersion: 4.0
       MaxRetries: 0
-      NumberOfWorkers: 6
+      NumberOfWorkers: 8
       Role: arn:aws:iam::997290969158:role/LabRole
       Timeout: 90
       WorkerType: G.1X
@@ -42,7 +40,15 @@ Resources:
         ScriptLocation: s3://flipkart-dataset/scripts/Products_Glue_Job.py
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
-  
+
+  GlueJobNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "Glue Job Notification Topic"
+      Subscription:
+        - Protocol: email
+          Endpoint: yadavomkar534@gmail.com
+
   MyLambdaCFT:
     Type: AWS::Serverless::Function
     Properties:
@@ -51,3 +57,17 @@ Resources:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Role: arn:aws:iam::997290969158:role/LabRole
+      Events:
+        S3Trigger:
+          Type: S3
+          Properties:
+            Bucket: flipkart-dataset
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: sales/
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref GlueJobNotificationTopic
