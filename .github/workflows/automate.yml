@@ -68,3 +68,11 @@ Resources:
       Principal: s3.amazonaws.com
       SourceArn: 
         Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
+
+  LambdaS3Event:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: 
+        Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
+      FunctionName: !Ref MyLambdaCFT
+      BatchSize: 1
