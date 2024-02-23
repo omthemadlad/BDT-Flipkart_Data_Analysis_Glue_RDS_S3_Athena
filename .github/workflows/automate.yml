@@ -50,24 +50,19 @@ Resources:
           Endpoint: yadavomkar534@gmail.com
 
   MyLambdaCFT:
-    Type: AWS::Serverless::Function
+    Type: AWS::Lambda::Function
     Properties:
       FunctionName: Sales-CFT-Trigger
       CodeUri: s3://flipkart-dataset/scripts/lambda_function.zip
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Role: arn:aws:iam::997290969158:role/LabRole
-      Events:
-        S3Trigger:
-          Type: S3
-          Properties:
-            Bucket: flipkart-dataset
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: sales/
-      Environment:
-        Variables:
-          SNS_TOPIC_ARN: !Ref GlueJobNotificationTopic
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MyLambdaCFT
+      Principal: s3.amazonaws.com
+      SourceArn: 
+        Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
