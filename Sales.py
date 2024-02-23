@@ -31,7 +31,7 @@ AmazonS3_node1707466350365 = glueContext.create_dynamic_frame.from_options(
     },
     connection_type="s3",
     format="csv",
-    connection_options={"paths": ["s3://finalprojectinput/sales/to_test_incremental_load/"], "recurse": True},
+    connection_options={"paths": ["s3://flipkart-dataset/sales/"], "recurse": True},
     transformation_ctx="AmazonS3_node1707466350365",
 )
 
@@ -65,8 +65,8 @@ SELECT
     SUM(procured_quantity) OVER (PARTITION BY product_id) AS Total_Quantity_Sold,
     SUM(procured_quantity * unit_selling_price) OVER (PARTITION BY product_id) AS Total_Sales,
     (procured_quantity * unit_selling_price - total_discount_amount) AS Total_Revenue,
-    ROUND((total_discount_amount / unit_selling_price) * 100) AS Discount_Percentage,
-    ROUND(((unit_selling_price - total_discount_amount) / unit_selling_price) * 100) AS Profit_Margin
+    ROUND((total_discount_amount / (unit_selling_price * procured_quantity)) * 100) AS Discount_Percentage,
+    ROUND(((((procured_quantity * unit_selling_price)-total_discount_amount) - total_weighted_landing_price) / (procured_quantity * unit_selling_price)) * 100) AS Profit_Margin
 FROM
     myDataSource;
 """
@@ -77,20 +77,18 @@ SQLQuery_node1707466387997 = sparkSqlQuery(
     transformation_ctx="SQLQuery_node1707466387997",
 )
 
-# Script generated for node Amazon S3
 AmazonS3_node1707466390637 = glueContext.getSink(
-    path="s3://finalprojectinput/sales_output_increment/",
+    path="s3://flipkart-dataset/sales_output/",
     connection_type="s3",
-    updateBehavior="UPDATE_IN_DATABASE",  # Using Glue Job Bookmark for update behavior
+    updateBehavior="UPDATE_IN_DATABASE",
     partitionKeys=[],
     enableUpdateCatalog=True,
     transformation_ctx="AmazonS3_node1707466390637",
 )
 AmazonS3_node1707466390637.setCatalogInfo(
-    catalogDatabase="flipkart_testing", catalogTableName="SALES_via_CFT"
+    catalogDatabase="flipkart-data", catalogTableName="SALES_via_CFT"
 )
 AmazonS3_node1707466390637.setFormat("glueparquet", compression="uncompressed")
 AmazonS3_node1707466390637.writeFrame(SQLQuery_node1707466387997)
 
-# Commit the job
 job.commit()
