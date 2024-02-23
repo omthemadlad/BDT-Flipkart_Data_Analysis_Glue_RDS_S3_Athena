@@ -24,23 +24,6 @@ Resources:
       DefaultArguments:
         "--job-bookmark-option": "job-bookmark-enable"
 
-  GlueJobProductsData:
-    Type: AWS::Glue::Job
-    Properties:
-      Name: Product_Glue_Job
-      Description: Ingests data from RDS and after doing transformation it writes the data as a parquet file to the data warehouse
-      GlueVersion: 4.0
-      MaxRetries: 0
-      NumberOfWorkers: 8
-      Role: arn:aws:iam::997290969158:role/LabRole
-      Timeout: 90
-      WorkerType: G.1X
-      Command:
-        Name: glueetl
-        ScriptLocation: s3://flipkart-dataset/scripts/Products_Glue_Job.py
-      DefaultArguments:
-        "--job-bookmark-option": "job-bookmark-enable"
-
   GlueJobNotificationTopic:
     Type: AWS::SNS::Topic
     Properties:
@@ -67,12 +50,13 @@ Resources:
       FunctionName: !Ref MyLambdaCFT
       Principal: s3.amazonaws.com
       SourceArn: 
-        Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
+        Fn::Sub: arn:aws:s3:::flipkart-dataset
 
-  LambdaS3Event:
-    Type: AWS::Lambda::EventSourceMapping
+  LambdaInvokePermissionSales:
+    Type: AWS::Lambda::Permission
     Properties:
-      EventSourceArn: 
-        Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
+      Action: lambda:InvokeFunction
       FunctionName: !Ref MyLambdaCFT
-      BatchSize: 1
+      Principal: s3.amazonaws.com
+      SourceArn: 
+        Fn::Sub: arn:aws:s3:::flipkart-dataset/sales/
