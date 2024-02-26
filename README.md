@@ -9,11 +9,12 @@ In this comprehensive Big Data project, we delve into the Flipkart Grocery trans
 - **AWS RDS:** Hosted a relational database for structured data, forming a robust foundation for analysis.
 - **AWS Athena:** Used for querying data directly in S3 using SQL, enabling quick and efficient analytics.
 - **GitHub Actions:** Automated the data pipeline process, ensuring a streamlined workflow with each repository update.
-- **Kafka:** Implemented as a real-time streaming data source for up-to-the-minute insights.
+- **AWS SNS:** Implemented fot notification of Glue Job runs.
 - **Tableau:** Visualized insights through an interactive dashboard, providing a user-friendly interface.
 
 ## Data Pipeline Workflow
-#Add architecture
+
+![FinalArchitecture-ezgif com-video-to-gif-converter](https://github.com/omthemadlad/BDT-Flipkart_Data_Analysis_Glue_RDS_S3_Athena/assets/66026855/ac355103-a9e2-4157-9cb9-20d9fc16ebf3)
 
 ## Insights and Achievements
 - 🚀 **Best-Selling Items:** Identified top-performing products for strategic decision-making.
@@ -21,9 +22,9 @@ In this comprehensive Big Data project, we delve into the Flipkart Grocery trans
 - 🏆 **Brand Performance Evaluation:** Evaluated brand performance to inform partnerships, marketing strategies, and inventory management.
 
 ## How to Use
-- **Clone Repository:** Clone this repository to your local machine:
-  ```bash
-  git clone https://github.com/your-username/your-repository.git
+- **Clone Repository:**
+  
+gh repo clone omthemadlad/BDT-Flipkart_Data_Analysis_Glue_RDS_S3_Athena
 
 ## Deployment Steps
 Prerequisites:
