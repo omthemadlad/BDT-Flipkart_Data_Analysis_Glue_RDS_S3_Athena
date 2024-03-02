@@ -63,14 +63,14 @@ Resources:
         Variables:
           SNS_TOPIC_ARN: !Ref GlueJobNotificationTopic
 
-   LambdaInvokePermission:
-     Type: AWS::Lambda::Permission
-     Properties:
-       Action: lambda:InvokeFunction
-       FunctionName: !Ref MyLambdaCFT
-       Principal: s3.amazonaws.com
-       SourceArn: 
-         Fn::Sub: arn:aws:s3:::flipkart-dataset
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MyLambdaCFT
+      Principal: s3.amazonaws.com
+      SourceArn: 
+        Fn::Sub: arn:aws:s3:::flipkart-dataset
 
   LambdaInvokePermissionSales:
     Type: AWS::Lambda::Permission
