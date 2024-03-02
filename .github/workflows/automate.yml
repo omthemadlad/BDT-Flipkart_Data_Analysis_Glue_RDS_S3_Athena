@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
     MemorySize: 128
@@ -15,7 +16,7 @@ Resources:
       MaxRetries: 0
       NumberOfWorkers: 8
       Role: arn:aws:iam::997290969158:role/LabRole
-      Timeout: 5
+      Timeout: 90
       WorkerType: G.1X
       Command:
         Name: glueetl
@@ -32,7 +33,7 @@ Resources:
       MaxRetries: 0
       NumberOfWorkers: 8
       Role: arn:aws:iam::997290969158:role/LabRole
-      Timeout: 5
+      Timeout: 90
       WorkerType: G.1X
       Command:
         Name: glueetl
@@ -62,14 +63,14 @@ Resources:
         Variables:
           SNS_TOPIC_ARN: !Ref GlueJobNotificationTopic
 
-  LambdaInvokePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref MyLambdaCFT
-      Principal: s3.amazonaws.com
-      SourceArn: 
-        Fn::Sub: arn:aws:s3:::flipkart-dataset
+   LambdaInvokePermission:
+     Type: AWS::Lambda::Permission
+     Properties:
+       Action: lambda:InvokeFunction
+       FunctionName: !Ref MyLambdaCFT
+       Principal: s3.amazonaws.com
+       SourceArn: 
+         Fn::Sub: arn:aws:s3:::flipkart-dataset
 
   LambdaInvokePermissionSales:
     Type: AWS::Lambda::Permission
